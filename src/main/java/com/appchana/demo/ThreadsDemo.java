@@ -2,15 +2,14 @@ package main.java.com.appchana.demo;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 
 /**
  * Created by ivanmolera on 06/02/2018.
  */
 public class ThreadsDemo {
+
+    private static int timeout = 900;
 
     public static void main(String[] args) {
         System.out.println("main class");
@@ -46,14 +45,25 @@ public class ThreadsDemo {
         }
         secondThreadPool.shutdown();
 
-        for (Future<String> future : futures) {
-            try {
-                String response = future.get();
-                System.out.println(response);
+        try {
+            if (!secondThreadPool.awaitTermination(timeout, TimeUnit.MILLISECONDS)) {
+                System.err.println("Timeout!");
+                secondThreadPool.shutdownNow();
             }
-            catch(InterruptedException | ExecutionException e) {
-                System.out.println("Future exception: " + e.getMessage());
+
+            for (Future<String> future : futures) {
+                try {
+                    String response = future.get();
+                    System.out.println(response);
+                }
+                catch(ExecutionException e) {
+                    future.cancel(true);
+                    System.out.println("Future exception: " + e.getMessage());
+                }
             }
+        }
+        catch (InterruptedException e) {
+            secondThreadPool.shutdownNow();
         }
     }
 }

@@ -10,6 +10,13 @@ public class MyCallable implements Callable<String> {
     @Override
     public String call() throws Exception {
 
+        if(Thread.currentThread().getId() % 2 == 1) {
+            Thread.sleep(1000);
+        }
+        else {
+            Thread.sleep(500);
+        }
+
         String response = Thread.currentThread().getName() + ": ";
 
         for (int i = 5; i >= 0; i--) {
