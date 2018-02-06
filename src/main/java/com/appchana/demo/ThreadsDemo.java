@@ -9,14 +9,14 @@ import java.util.concurrent.*;
  */
 public class ThreadsDemo {
 
-    private static int timeout = 900;
+    private static int timeout = 2000;
 
     public static void main(String[] args) {
         System.out.println("main class");
 
         // Extending Thread class
         for (int i = 0; i < 25 ; i++) {
-            MyExtendedThread thread = new MyExtendedThread();
+            Thread thread = new MyExtendedThread();
             thread.start();
         }
 
@@ -65,5 +65,17 @@ public class ThreadsDemo {
         catch (InterruptedException e) {
             secondThreadPool.shutdownNow();
         }
+
+
+        // Synchronized
+        PoolResponse poolResponse = new PoolResponse();
+
+        ExecutorService threadPool = Executors.newFixedThreadPool(5);
+        for (int i = 0; i < 5 ; i++) {
+            threadPool.submit(new PoolCallableTask(poolResponse));
+        }
+        threadPool.shutdown();
+
+        System.out.println(poolResponse.getText());
     }
 }
