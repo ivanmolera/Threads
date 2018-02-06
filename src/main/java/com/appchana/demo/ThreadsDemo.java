@@ -14,21 +14,27 @@ public class ThreadsDemo {
     public static void main(String[] args) {
         System.out.println("main class");
 
-        // Extending Thread class
+        //////////////////////////////////////////////////
+        // Extending Thread class                       //
+        //////////////////////////////////////////////////
         for (int i = 0; i < 25 ; i++) {
             Thread thread = new MyExtendedThread();
             thread.start();
         }
 
 
-        // Implementing Runnable interface
+        //////////////////////////////////////////////////
+        // Implementing Runnable interface              //
+        //////////////////////////////////////////////////
         for (int i = 0; i < 25 ; i++) {
             Thread thread = new Thread(new MyRunnable());
             thread.start();
         }
 
 
-        // Executor Service
+        //////////////////////////////////////////////////
+        // Executor Service                             //
+        //////////////////////////////////////////////////
         ExecutorService firstThreadPool = Executors.newFixedThreadPool(25);
         for (int i = 0; i < 25 ; i++) {
             firstThreadPool.execute(new MyRunnable());
@@ -36,7 +42,9 @@ public class ThreadsDemo {
         firstThreadPool.shutdown();
 
 
-        // Implementing Callable interface
+        //////////////////////////////////////////////////
+        // Implementing Callable interface              //
+        //////////////////////////////////////////////////
         List<Future<String>> futures = new ArrayList<>();
 
         ExecutorService secondThreadPool = Executors.newFixedThreadPool(25);
@@ -67,7 +75,9 @@ public class ThreadsDemo {
         }
 
 
-        // Synchronized
+        //////////////////////////////////////////////////
+        // Synchronized                                 //
+        //////////////////////////////////////////////////
         PoolResponse poolResponse = new PoolResponse();
 
         ExecutorService threadPool = Executors.newFixedThreadPool(5);
